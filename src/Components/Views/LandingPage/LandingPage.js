@@ -16,14 +16,17 @@ function LandingPage () {
         return () => clearTimeout(timer)
     }, [Search])
 
-
+    let filterResult = (result) =>{
+        return result.filter(ele => ele.url !== null)
+    }
     const fetchNews = (endpoint) => {
 
         fetch(endpoint)
             .then(result => result.json())
             .then(result => {
                 // console.log(new Date(result.hits[0].created_at).toDateString())
-                setNews(result.hits)
+                let res = filterResult(result.hits)
+                setNews(res)
             },setLoading(false))
             .catch(error => console.error('Error:', error)
             )
@@ -49,7 +52,7 @@ function LandingPage () {
                 <div className='news-box'>
                     {
                        News &&  News.map( (news, index) =>{
-                            return(
+                            {return(
                                 <React.Fragment key={index}>
                                     <NewsCard
                                         date = {news.created_at}
@@ -61,7 +64,7 @@ function LandingPage () {
                                         url = {news.url}
                                     />
                                 </React.Fragment>
-                            )
+                            )}
                         })
                     }
                 </div>
